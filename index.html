@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dietary and Wellness Navigator DaWN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      font-style: italic;
+      background: linear-gradient(#c2dbea, #c2c5ea);
+      color: white;
+      padding: 1.5rem;
+      display: flex;
+      position: relative;
+      z-index: 1;
+    }
+
+    header .logo-container {
+      margin-right: 100px;
+      width: 50px;
+      height: auto;
+    }
+
+    header h1 {
+      display: flex;
+      align-items: center;
+      font-size: smaller;
+    }
+
+    header h2 {
+      font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif ;
+      display: flex;
+      align-items: center;
+      font-size: x-small;
+      align-items: flex-start;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    img {
+      border-radius: 100%;
+      height: 150px;
+      width: 150px;
+    }
+
+    .progress-bar {
+      background: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 15px 0;
+      position: relative;
+      height: 20px;
+    }
+
+    .progress-bar-inner {
+      background: #4CAF50;
+      height: 100%;
+      width: 0;
+      transition: width 0.3s;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #4CAF50;
+      color: white;
+      margin-top: 20px;
+    }
+
+    .wave {
+      background: rgb(255 255 255 / 25%);
+      border-radius: 1000% 1000% 0 0;
+      position: absolute;
+      width: 100%;
+      height: 12em;
+      animation: wave 10s -3s linear infinite;
+      transform: translate3d(0, 0, 0);
+      opacity: 0.8;
+      bottom: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .wave:nth-of-type(2) {
+      bottom: -1.25em;
+      animation: wave 18s linear reverse infinite;
+      opacity: 0.8;
+    }
+
+    .wave:nth-of-type(3) {
+      bottom: -2.5em;
+      animation: wave 20s -1s reverse infinite;
+      opacity: 0.9;
+    }
+
+    @keyframes wave {
+      2% {
+        transform: translateX(1);
+      }
+
+      25% {
+        transform: translateX(-25%);
+      }
+
+      50% {
+        transform: translateX(-50%);
+      }
+
+      75% {
+        transform: translateX(-25%);
+      }
+
+      100% {
+        transform: translateX(1);
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      main {
+        padding: 10px;
+      }
+
+      button {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="logo-container">
+      <img src="Logo.jpg" alt="Logo">
+      <h1>DaWN</h1>
+      <h3>Dietary and Wellness Navigator</h3>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h2>Log Your Meals</h2>
+      <div class="input-group">
+        <label for="meal">Meal Name:</label>
+        <input type="text" id="meal" placeholder="E.g., Grilled Chicken Salad">
+      </div>
+      <div class="input-group">
+        <label for="calories">Calories (kcal):</label>
+        <input type="number" id="calories" placeholder="E.g., 400">
+      </div>
+      <button onclick="logMeal()">Log Meal</button>
+    </section>
+    <section>
+      <h2>Hydration Tracker</h2>
+      <p>Goal: 2000 ml</p>
+      <div class="progress-bar">
+        <div id="hydrationProgress" class="progress-bar-inner"></div>
+      </div>
+      <div class="input-group">
+        <label for="water">Water Intake (ml):</label>
+        <input type="number" id="water" placeholder="E.g., 250">
+      </div>
+      <button onclick="logWater()">Log Water</button>
+    </section>
+    <section>
+      <h2>Progress Summary</h2>
+      <div id="summary">
+        <p><strong>Total Calories Consumed:</strong> <span id="caloriesLogged">0</span> kcal</p>
+        <p><strong>Total Water Intake:</strong> <span id="waterLogged">0</span> ml</p>
+      </div>
+      <button onclick="resetProgress()">Reset Progress</button>
+    </section>
+    <section>
+      <h2>Logs</h2>
+      <div id="logs"></div>
+    </section>
+    <section>
+      <h2>Wellness Information</h2>
+      <div id="wellnessInfo" style="display: none; margin-top: 10px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
+        <p><strong>Tips for a Healthy Lifestyle:</strong></p>
+        <ul>
+          <li>Eat a variety of nutrient-rich foods to get the vitamins and minerals your body needs.</li>
+          <li>Drink at least 3,000 ml/ 13 cups for men and of 2,200 ml/ 9 cups for women</li>
+          <li>Exercise regularly—at least 30 minutes a day, five times a week.</li>
+          <li>Get enough sleep—aim for 7-8 hours per night.</li>
+          <li>Reduce stress by practicing mindfulness or meditation.</li>
+        </ul>
+        <p>Remember, consistency is key to maintaining a balanced and sustainable approach to wellness.</p>
+      </div>
+      <button onclick="toggleWellnessInfo()">Show More Information</button>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2024 Dietary and Wellness Navigator (DaWN)</p>
+  </footer>
+
+  <script>
+    let totalCalories = 0;
+    let totalWater = 0;
+    const hydrationGoal = 2000;
+    document.addEventListener("DOMContentLoaded", () => {
+      totalCalories = parseInt(localStorage.getItem("totalCalories")) || 0;
+      totalWater = parseInt(localStorage.getItem("totalWater")) || 0;
+
+      document.getElementById("caloriesLogged").innerText = totalCalories;
+      document.getElementById("waterLogged").innerText = totalWater;
+
+      updateHydrationProgress();
+    });
+
+    function logMeal() {
+      const meal = document.getElementById("meal").value;
+      const calories = parseInt(document.getElementById("calories").value);
+
+      if (meal && calories) {
+        totalCalories += calories;
+        document.getElementById("caloriesLogged").innerText = totalCalories;
+        localStorage.setItem("totalCalories", totalCalories);
+
+        const log = document.createElement("div");
+        log.innerText = `Meal: ${meal}, Calories: ${calories}`;
+        document.getElementById("logs").appendChild(log);
+
+        document.getElementById("meal").value = "";
+        document.getElementById("calories").value = "";
+      } else {
+        alert("Please enter valid meal and calorie details.");
+      }
+    }
+
+    function logWater() {
+      const water = parseInt(document.getElementById("water").value);
+
+      if (water) {
+        totalWater += water;
+        document.getElementById("waterLogged").innerText = totalWater;
+        localStorage.setItem("totalWater", totalWater);
+
+        updateHydrationProgress();
+
+        const log = document.createElement("div");
+        log.innerText = `Water: ${water} ml`;
+        document.getElementById("logs").appendChild(log);
+
+       
+        document.getElementById("water").value = "";
+      } else {
+        alert("Please enter a valid water amount.");
+      }
+    }
+
+    
+    function updateHydrationProgress() {
+      const progress = Math.min((totalWater / hydrationGoal) * 100, 100);
+      document.getElementById("hydrationProgress").style.width = `${progress}%`;
+    }
+
+    
+    function resetProgress() {
+      if (confirm("Are you sure you want to reset your progress?")) {
+        totalCalories = 0;
+        totalWater = 0;
+
+        localStorage.setItem("totalCalories", 0);
+        localStorage.setItem("totalWater", 0);
+
+        document.getElementById("caloriesLogged").innerText = totalCalories;
+        document.getElementById("waterLogged").innerText = totalWater;
+        document.getElementById("logs").innerHTML = "";
+        updateHydrationProgress();
+      }
+    }
+    
+  function toggleWellnessInfo() {
+    const wellnessInfo = document.getElementById("wellnessInfo");
+    if (wellnessInfo.style.display === "none") {
+      wellnessInfo.style.display = "block";
+    } else {
+      wellnessInfo.style.display = "none";
+    }
+  }
+  </script>
+</body>
+</html>
